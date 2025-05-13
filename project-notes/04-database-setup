@@ -1,0 +1,68 @@
+# 04 - Database Setup (MySQL/phpMyAdmin)
+
+This guide explains how to set up the MySQL database for the Expense Tracker app using phpMyAdmin (via XAMPP).
+
+---
+
+## 🧱 Requirements
+
+* Install XAMPP (Windows/macOS)
+* Start Apache and MySQL via XAMPP control panel
+
+## 🔑 Set MySQL Root Password (Optional but Recommended)
+
+1. Open **XAMPP Control Panel**
+2. Click **"Shell"** button
+3. Run the following command:
+
+   ```bash
+   mysqladmin -u root password "yourpassword"
+   ```
+4. Or go to `http://localhost/phpmyadmin`, then:
+
+   * Click **"User accounts"** tab
+   * Locate the `root` user under `localhost`
+   * Click **"Edit Privileges"**
+   * Scroll to **"Change password"** section and set your password
+
+## ✅ Cross-check Password
+
+1. After setting password, ensure `.env` file in backend has:
+
+   ```env
+   DB_USER=root
+   DB_PASS=yourpassword
+   ```
+2. Restart MySQL service from XAMPP
+3. Run backend to check DB connection
+
+## 🌐 Access phpMyAdmin
+
+* Open browser: `http://localhost/phpmyadmin`
+
+## 🗃️ Create Database
+
+1. Click **"New"** in the sidebar
+2. Name it `expense_tracker`
+3. Click **"Create"**
+
+## 🔐 Users Table (Created by Sequelize)
+
+* Sequelize will auto-create tables based on models defined in `User.js` and `Expense.js`
+
+## 🧪 Verify Sequelize Sync
+
+Once backend is running:
+
+* phpMyAdmin > `expense_tracker` DB
+* Tables like `Users`, `Expenses` will appear
+
+## ✅ Tip
+
+If tables don’t show:
+
+* Check `.env` DB credentials
+* Confirm MySQL service is running
+* Check Sequelize `sync()` in `index.js`
+
+You're ready to work with the database!

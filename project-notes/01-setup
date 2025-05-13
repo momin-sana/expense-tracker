@@ -1,0 +1,61 @@
+# 01 - Full Stack Expense Tracker: Setup Guide
+
+This guide summarizes the installation and setup process for a full-stack Expense Tracker app using React (frontend), Node.js/Express (backend), and MySQL (database).
+
+---
+
+## ✅ Prerequisites
+
+* Node.js and npm installed
+* MySQL or XAMPP (with phpMyAdmin)
+* Visual Studio Code (or your preferred code editor)
+
+---
+
+## 📁 Project Structure
+
+```
+expense-tracker/
+├── client/         # React frontend
+└── server/         # Express backend
+```
+
+---
+
+## 🔧 Installation Summary
+
+### 1. Initialize project structure
+
+```bash
+mkdir expense-tracker && cd expense-tracker
+mkdir client server
+```
+
+### 2. Start Backend Server
+
+```bash
+cd server
+npm init -y
+npm install express cors dotenv jsonwebtoken bcryptjs mysql2 sequelize
+```
+
+### 3. Start Frontend React App
+
+```bash
+cd ../client
+npx create-react-app .
+npm install axios react-router-dom
+```
+
+### 4. Run Servers
+
+* Backend: `node index.js` or `nodemon index.js` (port 5000)
+* Frontend: `npm start` (port 3000)
+
+### 5. MySQL/phpMyAdmin
+
+* Open XAMPP > Start Apache and MySQL
+* Go to `http://localhost/phpmyadmin`
+* Create database: `expense_tracker`
+
+You're now ready to start development!

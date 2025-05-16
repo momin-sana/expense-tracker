@@ -1,0 +1,226 @@
+## ✅ Test API Using Thunder Client (or Postman)
+
+With your backend server running, it's time to **test the Auth API** for:
+
+We’ll do 2 things:
+
+🟢 1. Register a user
+🔒 2. Login the user and receive a JWT token
+
+
+We’ll use **Thunder Client (VS Code)** for testing (you can also use Postman).
+
+---
+
+## ⚡ A. Install Thunder Client in VS Code
+
+1. Open **VS Code**
+2. Go to **Extensions** → search `Thunder Client`
+3. Click **Install**
+4. You’ll now see a ⚡ **Thunder icon** in the sidebar
+
+---
+
+🔹 STEP A: Register a New User
+Request:
+
+Method: POST
+
+URL: http://localhost:5000/api/auth/register
+
+Body (JSON):
+{
+  "username": "john",
+  "email": "john@example.com",
+  "password": "123456"
+}
+Expected Response (if successful):
+
+json
+{
+  "id": 1,
+  "username": "john",
+  "email": "john@example.com",
+  "password": "$2a$10$...hashedpassword...",
+  "updatedAt": "2025-05-13T12:34:56.000Z",
+  "createdAt": "2025-05-13T12:34:56.000Z"
+}
+✅ At this stage, NO TOKEN is sent yet — just user is saved.
+
+🔹 STEP B: Login and Get JWT Token
+Request:
+
+Method: POST
+
+URL: http://localhost:5000/api/auth/login
+
+Body (JSON):
+{
+  "email": "john@example.com",
+  "password": "123456"
+}
+Expected Response:
+
+json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "id": 1,
+    "username": "john",
+    "email": "john@example.com"
+  }
+}
+✅ This confirms:
+
+Credentials are valid
+
+JWT token is generated with 1-day expiry
+
+You get user info without the password (which is good)
+
+✅ Why This Is Secure & Clean
+Feature	Status
+Password hashing with bcrypt	✅ Yes
+JWT token generation at login	✅ Yes
+User creation via Sequelize	✅ Yes
+No .env leakage	✅ Yes
+Only user info (no password) returned to client	✅ Yes
+
+🔐 REMINDER: Your .env Must Contain This
+In server/.env:
+    DB_NAME=expense_tracker
+    DB_USER=root
+    DB_PASS=
+    DB_HOST=localhost
+    JWT_SECRET=your_secret_key_here
+If JWT_SECRET is missing or incorrect, the login route will crash. So double-check this.
+
+
+---
+
+## 🔒 D. What Does the Token Do?
+
+* This `token` must be **saved in `localStorage`** in the frontend
+* It’s included in **Authorization headers** for protected routes
+
+  ```http
+  Authorization: Bearer your.jwt.token
+  ```
+
+---
+
+## 🧠 Auth Controller Code (Final Version)
+
+> ✅ Auto-login on registration
+> ✅ Returns token + user
+> ✅ Clean, reusable structure
+
+### File: `controllers/authController.js`
+
+```js
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+
+// Register (with token)
+exports.register = async (req, res) => {
+  const { username, email, password } = req.body;
+  try {
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser)
+      return res.status(400).json({ error: 'Email already exists' });
+
+    const hashed = await bcrypt.hash(password, 10);
+    const user = await User.create({ username, email, password: hashed });
+
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+
+    res.status(201).json({
+      token,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+// Login
+exports.login = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ where: { email } });
+    if (!user || !(await bcrypt.compare(password, user.password)))
+      return res.status(401).json({ error: 'Invalid credentials' });
+
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+```
+
+---
+
+## 🧾 Summary Table
+
+| Task                     | Status        |
+| ------------------------ | ------------- |
+| Database Setup           | ✅ Completed   |
+| Sequelize Models         | ✅ Done        |
+| Tables Synced            | ✅ Done        |
+| Auth Controller Written  | ✅ Done        |
+| API Testing with Thunder | ✅ Tested      |
+| JWT Returned on Login    | ✅ Yes         |
+| Auto-login on Register   | ✅ Implemented |
+
+---
+
+## 🚀 Next Phase: Build Expense API
+
+In the next step, we’ll create:
+
+* Protected route for adding/viewing expenses
+* JWT-based authentication middleware
+* Connect with React frontend
+
+---
+
+Will Token Be Unique for Each Login?
+    Yes. Even for the same user logging in multiple times, each login generates a new token because:
+
+    The jwt.sign() method signs with a timestamp (iat) internally.
+
+    You are doing:
+
+    js
+        jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' })
+        
+    This means:
+    The payload ({ id: user.id }) stays the same
+    But each token has a different "issued at" timestamp
+    So the final token string will be different every time you call login.
+
+    ✅ So yes, every login will return a new and unique JWT token, even if it's the same user.
+
+
+✅ WHAT YOU’VE DONE TILL NOW (Backend Phase 1 — Auth)
+        Step	                                    Status
+        MySQL setup via phpMyAdmin	                ✅ Done
+        Sequelize connected with .env	            ✅ Done
+        users and expenses tables	                ✅ Done
+        Register & login routes tested	            ✅ Done
+        Passwords hashed with bcrypt	            ✅ Done
+        JWT token on login	                        ✅ Done

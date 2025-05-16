@@ -49,7 +49,7 @@ npm install axios react-router-dom
 
 ### 4. Run Servers
 
-* Backend: `npx node index.js` or `nodemon index.js` (port 5000)
+* Backend: `node index.js` or `npx nodemon index.js` (port 5000)
 * Frontend: `npm start` (port 3000)
 
 ### 5. MySQL/phpMyAdmin

@@ -1,15 +1,21 @@
-// middleware/authMiddleware.js
+// middlewares/authMiddleware.js
+
 const jwt = require('jsonwebtoken');
 
+// Middleware to protect routes
 module.exports = (req, res, next) => {
+  // Get the token from Authorization header
   const authHeader = req.headers['authorization'];
   if (!authHeader) return res.status(403).json({ error: 'No token provided' });
 
+  // Format: "Bearer <token>"
   const token = authHeader.split(' ')[1];
   if (!token) return res.status(403).json({ error: 'Malformed token' });
 
   try {
+    // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // Save user ID to request object
     req.userId = decoded.id;
     next();
   } catch (err) {

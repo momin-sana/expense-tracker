@@ -53,3 +53,50 @@ npx nodemon index.js
 ```
 
 The server runs at: [http://localhost:5000](http://localhost:5000)
+
+
+
+What is a .env file?
+    It's a hidden configuration file where you store sensitive or environment-specific values like DB credentials, API keys, or JWT secrets.
+    Using .env avoids hardcoding these values in your code, which makes your project more secure and portable.
+    
+    1. DB_NAME=expense_tracker
+        This should match the database name you created in phpMyAdmin.
+        It's used in the backend to know which database to connect to.
+
+    2. DB_USER=root
+        This is the username for your MySQL database.
+        By default in XAMPP, it's usually root.
+
+    3. DB_PASS=your_password_here
+        The password for the MySQL user.
+        In XAMPP, the default password for root is usually empty, so you can just write:
+
+        .env -file
+            DB_PASS=
+            // unless you have set a password manually.
+
+    4. DB_HOST=localhost
+        Tells the backend where the MySQL server is running.
+        Since you're using XAMPP on the same machine, localhost is correct.
+
+    5. JWT_SECRET=someverysecuresecret
+        How JWT_SECRET Works
+        What is JWT_SECRET?
+
+        It’s a secret key that YOU (the backend developer) define.
+
+        It’s used to sign (encrypt) and later verify the JWT tokens.
+
+        You put it in your .env file like this:
+            JWT_SECRET=mySuperSecretKey
+
+
+        Important Clarification:
+
+        🔐 JWT_SECRET is the same for all users — it’s the server’s private key to sign and validate tokens.
+
+        It does NOT change per user.
+
+        The token is unique because it includes user-specific data like their id and is timestamped.
+

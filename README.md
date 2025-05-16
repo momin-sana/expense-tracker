@@ -15,5 +15,5 @@ A fullstack expense tracking application built with:
 1. Clone the repo
 2. Run `npm install` in `/server` and `/client`
 3. Configure `.env` for backend (DB credentials, JWT secret)
-4. Start server: `nodemon index.js` (in `/server`)
+4. Start server: `npx nodemon index.js` (in `/server`)
 5. Start client: `npm start` (in `/client`)

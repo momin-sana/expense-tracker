@@ -3,7 +3,7 @@ const { getExpenses, addExpense, updateExpense, deleteExpense } = require('../co
 const auth = require('../middlewares/authMiddleware');
 const router = express.Router();
 
-router.use(auth);
+router.use(auth); // Global route protection
 router.get('/', getExpenses);
 router.post('/', addExpense);
 router.put('/:id', updateExpense);

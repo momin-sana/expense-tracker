@@ -16,21 +16,38 @@ exports.addExpense = async (req, res) => {
 };
 
 exports.updateExpense = async (req, res) => {
+  try {
+    const expense = await Expense.findOne({
+      where: {
+        id: req.params.id,
+        UserId: req.userId, // Make sure it's the user's own expense
+      },
+    });
+
+    if (!expense) {
+      return res.status(404).json({ error: 'Expense not found' });
+    }
+
+    await expense.update(req.body);
+    res.json(expense); // Instead of just a message, return the updated expense
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+
+exports.deleteExpense = async (req, res) => {
   const { id } = req.params;
   try {
-    await Expense.update(req.body, { where: { id, UserId: req.userId } });
-    res.json({ message: 'Updated' });
+    const deleted = await Expense.destroy({ where: { id, UserId: req.userId } });
+    if (deleted) {
+      res.json({ message: 'Deleted' });
+    } else {
+      res.status(404).json({ error: 'Expense not found or unauthorized' });
+    }
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
 
-exports.deleteExpense = async (req, res) => {
-  const { id } = req.params;
-  try {
-    await Expense.destroy({ where: { id, UserId: req.userId } });
-    res.json({ message: 'Deleted' });
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-};

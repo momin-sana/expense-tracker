@@ -2,8 +2,8 @@
 
 We’ll now ensure:
 
-* ✅ Your **MySQL database** is ready
-* ✅ Your **`.env` file** is properly configured (for local use only)
+* ✅ **MySQL database** is ready
+* ✅ **`.env` file** is properly configured (for local use only)
 * ✅ Sequelize connects and creates the tables (`User` and `Expense`)
 * ✅ Server runs without errors and is ready to accept data
 
@@ -23,7 +23,7 @@ We’ll now ensure:
 
 ### 🔹 STEP 2: Configure `.env` in `server/` Folder
 
-Create a `.env` file inside your `server/` folder (same level as `index.js`) and paste:
+Create a `.env` file inside `server/` folder (same level as `index.js`) and paste:
 
 ```
 DB_NAME=expense_tracker
@@ -61,13 +61,13 @@ const sequelize = new Sequelize(
 module.exports = sequelize;
 ```
 
-✅ This code will attempt connection to your MySQL db using `.env` values.
+✅ This code will attempt connection to MySQL db using `.env` values.
 
 ---
 
 ### 🔹 STEP 4: Sync Models and Start Server
 
-Ensure this is at the end of your `server/index.js`:
+Ensure this is at the end of `server/index.js`:
 
 ```js
 sequelize.sync().then(() => {
@@ -81,7 +81,7 @@ This line makes Sequelize auto-create `Users` and `Expenses` tables inside `expe
 
 ### 🔹 STEP 5: Start the Server
 
-In your terminal:
+In terminal:
 
 ```bash
 cd server
@@ -132,39 +132,11 @@ Use [Postman](https://www.postman.com/) or Thunder Client (VS Code extension) to
 
 You’ve successfully:
 
-* Created your MySQL DB using phpMyAdmin
+* Created MySQL DB using phpMyAdmin
 * Configured Sequelize to connect
 * Created tables via model syncing
-* Secured your credentials via `.env`
-* Server is running and your auth API is working!
+* Secured credentials via `.env`
+* Server is running and auth API is working!
 
 ---
-
-## ✅ NEXT PHASE: FRONTEND IMPLEMENTATION (React.js)
-
-### Here’s What We’ll Build:
-
-1. 🛡️ **Authentication**
-
-   * Register / Login forms (with validation)
-   * Store JWT in `localStorage`
-   * Protect dashboard route
-
-2. 💵 **Expense Dashboard**
-
-   * View all expenses
-   * Add/Edit/Delete
-   * Filter by category/date
-
-3. 📊 **Visual Dashboard**
-
-   * Pie Chart (category breakdown)
-   * Bar Chart (monthly spending)
-
-4. 🎨 UI/UX
-
-   * Clean, responsive UI (using basic CSS or a framework like Tailwind/Bootstrap if you like)
-
----
-
 

@@ -1,20 +1,4 @@
-Yes, you're absolutely correct to place this in a **new file under the `project-notes/` folder** — and since it's part of Phase A, this could be:
-
-```
-project-notes/
-├── 05-phaseA-backendMYSQLviaMyPHPadmin/
-│   ├── 05-1-db-setup.md         ✅ Already done
-│   └── 05-2-models-and-columns.md   👈 New file (the one you're asking for)
-```
-
----
-
-### ✅ Here's a properly formatted and organized version of your explanation for the new file:
-
-**File:** `project-notes/05-phaseA-backendMYSQLviaMyPHPadmin/05-2-models-and-columns.md`
-
-````markdown
-# 📄 05-2: How Models Create Columns in MySQL (Users & Expenses Tables)
+# 📄 05-1: How Models Create Columns in MySQL (Users & Expenses Tables)
 
 ---
 

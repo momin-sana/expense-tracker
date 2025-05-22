@@ -199,28 +199,28 @@ In the next step, we’ll create:
 ---
 
 Will Token Be Unique for Each Login?
-    Yes. Even for the same user logging in multiple times, each login generates a new token because:
+  Yes. Even for the same user logging in multiple times, each login generates a new token because:
 
-    The jwt.sign() method signs with a timestamp (iat) internally.
+  The jwt.sign() method signs with a timestamp (iat) internally.
 
-    You are doing:
+  You are doing:
 
-    js
-        jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' })
-        
-    This means:
-    The payload ({ id: user.id }) stays the same
-    But each token has a different "issued at" timestamp
-    So the final token string will be different every time you call login.
+  js
+    jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' })
+      
+  This means:
+  The payload ({ id: user.id }) stays the same
+  But each token has a different "issued at" timestamp
+  So the final token string will be different every time you call login.
 
-    ✅ So yes, every login will return a new and unique JWT token, even if it's the same user.
+  ✅ So yes, every login will return a new and unique JWT token, even if it's the same user.
 
 
 ✅ WHAT YOU’VE DONE TILL NOW (Backend Phase 1 — Auth)
-        Step	                                    Status
-        MySQL setup via phpMyAdmin	                ✅ Done
-        Sequelize connected with .env	            ✅ Done
-        users and expenses tables	                ✅ Done
-        Register & login routes tested	            ✅ Done
-        Passwords hashed with bcrypt	            ✅ Done
-        JWT token on login	                        ✅ Done
+  Step	                                    Status
+  MySQL setup via phpMyAdmin	              ✅ Done
+  Sequelize connected with .env	            ✅ Done
+  users and expenses tables	                ✅ Done
+  Register & login routes tested	          ✅ Done
+  Passwords hashed with bcrypt	            ✅ Done
+  JWT token on login	                      ✅ Done

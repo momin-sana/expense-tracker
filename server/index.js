@@ -6,6 +6,8 @@ const expenseRoutes = require('./routes/expenseRoutes');
 require('dotenv').config();
 
 const app = express();
+
+// ✅ Middleware
 app.use(cors());
 app.use(express.json());
 
@@ -18,6 +20,9 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/expenses', expenseRoutes);
 
+// ✅ DB & Server
 sequelize.sync().then(() => {
-  app.listen(5000, () => console.log('Server running on http://localhost:5000'));
+  app.listen(5000, () => {
+    console.log('Server running on http://localhost:5000');
+  });
 });
